@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, Image, ScrollView, View, Button, TextInput, Linking } from 'react-native'
+import { StyleSheet, ScrollView, View, Button, TextInput } from 'react-native'
 
 import Text from '../../shared/components/Text'
-import { formatDate } from '../../utils/dates'
+import EventInformation from './EventInformation'
 
 const DEMO_EVENT = {
   id: 'fake-id',
@@ -22,35 +22,8 @@ const DEMO_EVENT = {
 }
 
 const styles = StyleSheet.create({
-  item: {
-    backgroundColor: '#f9c2ff',
-    padding: 20,
-    marginVertical: 8
-  },
   header: {
     marginBottom: 8
-  },
-  date: {
-    marginBottom: 8
-  },
-  card: {
-    margin: 10,
-    borderWidth: 1,
-    borderColor: 'black',
-    borderRadius: 10,
-    overflow: 'hidden'
-  },
-  cardImage: {
-    flex: 1,
-    height: 280,
-    alignItems: 'stretch'
-  },
-  cardImageCanvas: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0
   },
   section: {
     padding: 20
@@ -69,48 +42,6 @@ const styles = StyleSheet.create({
     borderRadius: 10
   }
 })
-
-export const EventInformation = ({ event }) => {
-  const {
-    title,
-    starts,
-    image,
-    description,
-    location: { latitude, longitude }
-  } = event
-
-  return (
-    <View>
-      <View style={styles.cardImage}>
-        <Image source={{ uri: image }} style={styles.cardImageCanvas} resizeMode='cover' />
-      </View>
-      <View style={styles.section}>
-        <Text type='heading' style={styles.header}>{title}</Text>
-        <Text style={styles.date}>{formatDate(starts)}</Text>
-        <Button
-          onPress={() =>
-            Linking.openURL(`https://www.google.co.uk/maps/?q=${latitude},${longitude}`)
-          }
-          title='📍 Open map'
-        />
-        <Text type='smallText'>{description}</Text>
-      </View>
-    </View>
-  )
-}
-
-EventInformation.propTypes = {
-  event: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    starts: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    price: PropTypes.decimal,
-    location: PropTypes.shape({
-      latitude: PropTypes.string,
-      longitude: PropTypes.string
-    })
-  })
-}
 
 export const Event = ({ navigation }) => {
   const [name, setName] = useState('')
