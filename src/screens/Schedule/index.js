@@ -1,8 +1,9 @@
 import React, { useState, useRef } from 'react'
 import { useQuery } from '@apollo/react-hooks'
-import { FlatList, StyleSheet, View, Text, Image, ActivityIndicator, Button } from 'react-native'
+import { FlatList, StyleSheet, View, Image, ActivityIndicator, Button } from 'react-native'
 import { Calendar } from 'react-native-calendars'
 
+import Text from '../../shared/components/Text'
 import { formatDate } from '../../utils/dates'
 import { GET_EVENTS } from '../../graphql/queries'
 
@@ -16,16 +17,13 @@ const styles = StyleSheet.create({
     marginVertical: 8
   },
   sectionHeading: {
-    fontSize: 26,
     padding: 16,
     backgroundColor: 'white'
   },
   date: {
-    fontSize: 16,
     marginBottom: 8
   },
   cardHeading: {
-    fontSize: 24,
     marginVertical: 6
   },
   card: {
@@ -60,9 +58,9 @@ const EventCard = ({ navigate, id, starts, title, description, image }) => (
       <Image source={{ uri: image }} style={styles.cardImageCanvas} resizeMode="cover" />
     </View>
     <View style={styles.cardContent}>
-      <Text style={styles.cardHeading}>{title}</Text>
+      <Text type='subHeading' style={styles.cardHeading}>{title}</Text>
       <Text style={styles.date}>{formatDate(starts)}</Text>
-      <Text>{description}</Text>
+      <Text type='smallText'>{description}</Text>
       <Button
         onPress={() => navigate('Event', { id, title })}
         title="Buy a ticket"

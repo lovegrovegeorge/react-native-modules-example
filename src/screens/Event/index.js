@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
-import { StyleSheet, Image, ScrollView, View, Text, Button, TextInput, Linking } from 'react-native'
+import { StyleSheet, Image, ScrollView, View, Button, TextInput, Linking } from 'react-native'
 
+import Text from '../../shared/components/Text'
 import { formatDate } from '../../utils/dates'
 
 const DEMO_EVENT = {
@@ -27,15 +28,10 @@ const styles = StyleSheet.create({
     marginVertical: 8
   },
   header: {
-    fontSize: 26,
     marginBottom: 8
   },
   date: {
-    fontSize: 16,
     marginBottom: 8
-  },
-  title: {
-    fontSize: 24
   },
   card: {
     margin: 10,
@@ -63,7 +59,6 @@ const styles = StyleSheet.create({
     marginTop: 10
   },
   label: {
-    fontSize: 14,
     marginBottom: 10
   },
   input: {
@@ -87,18 +82,18 @@ export const EventInformation = ({ event }) => {
   return (
     <View>
       <View style={styles.cardImage}>
-        <Image source={{ uri: image }} style={styles.cardImageCanvas} resizeMode="cover" />
+        <Image source={{ uri: image }} style={styles.cardImageCanvas} resizeMode='cover' />
       </View>
       <View style={styles.section}>
-        <Text style={styles.header}>{title}</Text>
+        <Text type='heading' style={styles.header}>{title}</Text>
         <Text style={styles.date}>{formatDate(starts)}</Text>
         <Button
           onPress={() =>
             Linking.openURL(`https://www.google.co.uk/maps/?q=${latitude},${longitude}`)
           }
-          title="📍 Open map"
+          title='📍 Open map'
         />
-        <Text>{description}</Text>
+        <Text type='smallText'>{description}</Text>
       </View>
     </View>
   )
@@ -142,9 +137,9 @@ export const Event = ({ navigation }) => {
       <View>
         <EventInformation event={DEMO_EVENT} />
         <View style={styles.section}>
-          <Text style={styles.header}>Buy a ticket</Text>
+          <Text type='subHeading' style={styles.header}>Buy a ticket</Text>
           <View style={styles.field}>
-            <Text style={styles.label}>Your name</Text>
+            <Text type='formLabel' style={styles.label}>Your name</Text>
             <TextInput
               style={styles.input}
               onChangeText={handleSetName}
@@ -152,7 +147,7 @@ export const Event = ({ navigation }) => {
             />
           </View>
           <View style={styles.field}>
-            <Text style={styles.label}>Email address</Text>
+            <Text type='formLabel' style={styles.label}>Email address</Text>
             <TextInput
               style={styles.input}
               onChangeText={handleSetEmail}

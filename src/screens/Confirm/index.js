@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react'
 import { NativeModules } from 'react-native'
-import { StyleSheet, ScrollView, View, Text, Button, Image } from 'react-native'
+import { StyleSheet, ScrollView, View, Button, Image } from 'react-native'
+
+import Text from '../../shared/components/Text'
 
 const { SoundManager } = NativeModules
 
@@ -8,13 +10,12 @@ const SOUNDS = ['crowd', 'woohoo', 'clapping']
 
 const styles = StyleSheet.create({
   header: {
-    fontSize: 26,
     marginBottom: 24,
     textAlign: 'center'
   },
   body: {
-    fontSize: 15,
-    textAlign: 'center'
+    textAlign: 'center',
+    marginBottom: 20
   },
   content: {
     flex: 1,
@@ -32,7 +33,7 @@ const playSound = () => {
   try {
     SoundManager.play(randomSound)
   } catch (error) {
-    // Sound not found
+    // TODO Handle sound not found
   }
 }
 
@@ -44,9 +45,9 @@ export const Confirm = ({
 }) => {
   useEffect(() => {
     // Play sound effect on confirmation of payment
-    setTimeout(() => {
-      playSound()
-    }, 1000)
+    const soundTimeout = setTimeout(() => playSound(), 500)
+
+    return () => clearTimeout(soundTimeout)
   })
 
   return (
@@ -56,7 +57,7 @@ export const Confirm = ({
         style={styles.image}
       />
       <View style={styles.content}>
-        <Text style={styles.header}>Your Ticket</Text>
+        <Text type='subHeading' style={styles.header}>Your Ticket</Text>
         <Text style={styles.body}>{title}</Text>
         <Button
           onPress={() =>

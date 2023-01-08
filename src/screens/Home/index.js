@@ -1,15 +1,15 @@
 import React from 'react'
-import { StyleSheet, View, Text, Button } from 'react-native'
+import { StyleSheet, View, Button } from 'react-native'
+
+import Text from '../../shared/components/Text'
 
 const styles = StyleSheet.create({
   header: {
-    fontSize: 36,
     marginTop: 24,
     marginBottom: 24,
     textAlign: 'center'
   },
   blurb: {
-    fontSize: 18,
     marginBottom: 12,
     textAlign: 'center'
   }
@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
 
 export const Home = ({ navigation: { navigate } }) => (
   <View>
-    <Text style={styles.header}>EventsApp</Text>
+    <Text type='heading' style={styles.header}>Events App</Text>
     <Text style={styles.blurb}>The worlds greatest events in one tiny app.</Text>
     <Button onPress={() => navigate('Schedule')} title="All Events" color="#841584" />
   </View>
