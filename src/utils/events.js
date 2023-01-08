@@ -1,15 +1,14 @@
-
 export const groupEventsByDay = (events) => {
-  const days = {};
+  const days = {}
 
-  events.forEach(event => {
-    const thisDay = new Date(event.starts).toLocaleDateString("en-GB");
+  events.forEach((event) => {
+    const thisDay = new Date(event.starts).toLocaleDateString('en-GB')
 
-    if(days[thisDay]) {
-      days[thisDay].push(event);
+    if (days[thisDay]) {
+      days[thisDay].push(event)
     } else {
-      days[thisDay] = [event];
+      days[thisDay] = [event]
     }
   })
-  return days;
-};
+  return days
+}

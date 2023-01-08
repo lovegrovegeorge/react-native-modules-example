@@ -1,28 +1,28 @@
-import React, { useMemo, useState, useRef, useCallback } from 'react';
-import { useQuery } from '@apollo/react-hooks';
-import { FlatList, StyleSheet, View, Text, Image, ActivityIndicator, Button } from 'react-native';
-import { Calendar } from 'react-native-calendars';
+import React, { useState, useRef } from 'react'
+import { useQuery } from '@apollo/react-hooks'
+import { FlatList, StyleSheet, View, Text, Image, ActivityIndicator, Button } from 'react-native'
+import { Calendar } from 'react-native-calendars'
 
-import { formatDate } from '../../utils/dates';
-import { GET_EVENTS } from '../../graphql/queries';
+import { formatDate } from '../../utils/dates'
+import { GET_EVENTS } from '../../graphql/queries'
 
-const CARD_HEIGHT = 420;
-const LIST_HEADER_HEIGHT = 50;
+const CARD_HEIGHT = 420
+const LIST_HEADER_HEIGHT = 50
 
 const styles = StyleSheet.create({
   item: {
     backgroundColor: '#f9c2ff',
     padding: 20,
-    marginVertical: 8,
+    marginVertical: 8
   },
   sectionHeading: {
     fontSize: 26,
     padding: 16,
-    backgroundColor: 'white',
+    backgroundColor: 'white'
   },
   date: {
     fontSize: 16,
-    marginBottom: 8,
+    marginBottom: 8
   },
   cardHeading: {
     fontSize: 24,
@@ -35,24 +35,24 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'black',
     borderRadius: 10,
-    overflow: 'hidden',
+    overflow: 'hidden'
   },
   cardImage: {
     flex: 1,
     height: 180,
-    alignItems: 'stretch',
+    alignItems: 'stretch'
   },
   cardImageCanvas: {
     position: 'absolute',
     top: 0,
     left: 0,
     bottom: 0,
-    right: 0,
+    right: 0
   },
   cardContent: {
-    padding: 10,
-  },
-});
+    padding: 10
+  }
+})
 
 const EventCard = ({ navigate, id, starts, title, description, image }) => (
   <View style={styles.card}>
@@ -71,39 +71,43 @@ const EventCard = ({ navigate, id, starts, title, description, image }) => (
       />
     </View>
   </View>
-);
+)
 
-export const Schedule = ({ navigation: { navigate }}) => {
-  const eventListRef = useRef();
-  const [calendarVisible, setCalendarVisible] = useState(false);
-  const { loading, error, data } = useQuery(GET_EVENTS);
+export const Schedule = ({ navigation: { navigate } }) => {
+  const eventListRef = useRef()
+  const [calendarVisible, setCalendarVisible] = useState(false)
+  const { loading, error, data } = useQuery(GET_EVENTS)
 
-  const todaysDate = useMemo(() => new Date(), []);
+  const todaysDate = new Date()
 
-  const handleCalendarVisible = useCallback((show) => () => setCalendarVisible(show), []);
+  const handleCalendarVisible = (show) => () => setCalendarVisible(show)
 
-  const handleEventDateSelect = datePickerResponse => {
-    const eventIndex = data.allEvents.findIndex(event =>
-      new Date(event.starts) >= new Date(datePickerResponse.dateString)
-    );
+  const handleEventDateSelect = (datePickerResponse) => {
+    const eventIndex = data.allEvents.findIndex(
+      (event) => new Date(event.starts) >= new Date(datePickerResponse.dateString)
+    )
 
     setCalendarVisible(false)
     setTimeout(() => {
       eventListRef.current.scrollToIndex({
         index: eventIndex,
         viewPosition: 0,
-        animated: true,
+        animated: true
       })
     }, 100)
   }
 
-  if (loading) {
-    return <View><ActivityIndicator /></View>
-  }
+  if (loading) return (
+    <View>
+      <ActivityIndicator />
+    </View>
+  )
 
-  if (error) {
-    return <View><Text>ERROR: Is the server running?</Text></View>
-  }
+  if (error) return (
+    <View>
+      <Text>ERROR: Is the server running?</Text>
+    </View>
+  )
 
   const renderHeader = () => (
     <View
@@ -111,7 +115,7 @@ export const Schedule = ({ navigation: { navigate }}) => {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-end',
-        height: LIST_HEADER_HEIGHT,
+        height: LIST_HEADER_HEIGHT
       }}
     >
       <Button onPress={handleCalendarVisible(true)} title="🗓 Calendar" />
@@ -121,23 +125,11 @@ export const Schedule = ({ navigation: { navigate }}) => {
   const getItemLayout = (data, index) => ({
     length: CARD_HEIGHT,
     offset: CARD_HEIGHT * index + LIST_HEADER_HEIGHT,
-    index,
-  });
+    index
+  })
 
-  const renderItems = ({ item }) => <EventCard key={item.id} navigate={navigate} {...item} />
-
-  // TODO Add section headers
-  const renderSectionHeader = ({ section: { data } }) => {
-    return null;
-    if (!data) return null;
-    return (
-      <View style={styles.sectionHeading}>
-        <Text style={styles.cardHeading}>
-          {new Date(data[0].starts).toLocaleDateString('en-GB')}
-        </Text>
-      </View>
-    );
-  }
+  const renderItems = ({ item }) =>
+    <EventCard key={item.id} navigate={navigate} {...item} />
 
   return (
     <View>
@@ -150,12 +142,9 @@ export const Schedule = ({ navigation: { navigate }}) => {
         data={data?.allEvents}
       />
       {calendarVisible && (
-        <View style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}> 
+        <View style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
           <View style={{ backgroundColor: 'white', height: '100%', justifyContent: 'center' }}>
-            <Calendar
-              minDate={todaysDate}
-              onDayPress={handleEventDateSelect}
-            />
+            <Calendar minDate={todaysDate} onDayPress={handleEventDateSelect} />
             <View style={{ marginTop: 30 }}>
               <Button
                 onPress={handleCalendarVisible(false)}
@@ -168,5 +157,5 @@ export const Schedule = ({ navigation: { navigate }}) => {
         </View>
       )}
     </View>
-  );
-};
+  )
+}

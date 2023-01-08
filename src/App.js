@@ -1,9 +1,9 @@
-import React from 'react';
-import { ApolloProvider } from 'react-apollo';
-import { NavigationContainer } from '@react-navigation/native';
+import React from 'react'
+import { ApolloProvider } from 'react-apollo'
+import { NavigationContainer } from '@react-navigation/native'
 
-import { Navigator } from './Navigator';
-import { client } from './graphql/client';
+import { Navigator } from './Navigator'
+import { client } from './graphql/client'
 
 const App = () => (
   <NavigationContainer>
@@ -11,6 +11,6 @@ const App = () => (
       <Navigator />
     </ApolloProvider>
   </NavigationContainer>
-);
+)
 
-export default App;
+export default App

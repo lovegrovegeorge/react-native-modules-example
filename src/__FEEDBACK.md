@@ -1,11 +1,6 @@
-## Overall thoughts
+## /src/screens/Schedule/index.js
 
-- Consider code style and linting to be used across the codebase
-- Consider useMemo / useCallback usage in more components to prevent re-renders that cause repeated execution / instantiation
-
-## /src/screens/Schedule/index.js 
-
-- Maintain components in separate file to neaten the codebase, keep concerns separate and make it eaiser to test
+- Maintain shared and screen components in separate files to neaten and decouple each part of the codebase - helping to keep concerns separate and making it eaiser to test and reuse code
 
 ## /src/utils/dates.js
 

@@ -12,7 +12,7 @@ We recommend that the test should take a couple of hours (2-3) rather than days.
 
 
 ## Setup
-- A very basic GraphQL endpoint with a list of events is provided. Start it by running `node server.js`. You'll then have access to GraphQL at http://localhost:8702/graphql
+- A very basic GraphQL endpoint with a list of events is provided. Start it by running `node server.js`. You'll then have access to GraphQL at http://localhost:8702/graphql. If you are using a more recent version of Node you may need to run `export NODE_OPTIONS=--openssl-legacy-provider` before starting the server.
 - You'll need to install dependencies via `yarn install` followed by `cd ios; pod install`
 - Open `./src/ios/EventsApp.xcworkspace` in Xcode to run
 
