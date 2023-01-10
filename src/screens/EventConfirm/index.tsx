@@ -1,12 +1,51 @@
-import React, { useEffect } from 'react'
-import { NativeModules } from 'react-native'
-import { StyleSheet, ScrollView, View, Button, Image } from 'react-native'
 
+import React, { useEffect } from 'react'
+import { StyleSheet, ScrollView, View, Button, Image } from 'react-native'
+import { NavigationProp, RouteProp } from '@react-navigation/native'
+
+import { playSound } from '../../utils/soundManager'
 import Text from '../../shared/components/Text'
 
-const { SoundManager } = NativeModules
+type EventConfirmScreenProps = {
+  navigation: NavigationProp<any, any>
+  route: RouteProp<any, any>
+}
 
-const SOUNDS = ['crowd', 'woohoo', 'clapping']
+const EventConfirmScreen = ({
+  navigation,
+  route
+}: EventConfirmScreenProps) => {
+  const { reset } = navigation
+
+  useEffect(() => {
+    // Play sound effect on confirmation of payment
+    const soundTimeout = setTimeout(() => playSound(), 500)
+
+    return () => clearTimeout(soundTimeout)
+  })
+
+  return (
+    <ScrollView style={{ flex: 1 }}>
+      <Image
+        source={{ uri: 'https://media.giphy.com/media/U15x0bURfSEOJI0nbX/giphy.gif' }}
+        style={styles.image}
+      />
+      <View style={styles.content}>
+        <Text type='subHeading' style={styles.header}>Your Ticket</Text>
+        <Text style={styles.body}>{route.params?.title}</Text>
+        <Button
+          onPress={() =>
+            reset({
+              index: 0,
+              routes: [{ name: 'Home' }]
+            })
+          }
+          title="Go back Home"
+        />
+      </View>
+    </ScrollView>
+  )
+}
 
 const styles = StyleSheet.create({
   header: {
@@ -27,48 +66,4 @@ const styles = StyleSheet.create({
   }
 })
 
-const playSound = () => {
-  const randomSound = SOUNDS[Math.ceil(Math.random() * SOUNDS.length) - 1]
-
-  try {
-    SoundManager.play(randomSound)
-  } catch (error) {
-    // TODO Handle sound not found
-  }
-}
-
-export const Confirm = ({
-  navigation: { reset },
-  route: {
-    params: { id, title }
-  }
-}) => {
-  useEffect(() => {
-    // Play sound effect on confirmation of payment
-    const soundTimeout = setTimeout(() => playSound(), 500)
-
-    return () => clearTimeout(soundTimeout)
-  })
-
-  return (
-    <ScrollView style={{ flex: 1 }}>
-      <Image
-        source={{ uri: 'https://media.giphy.com/media/U15x0bURfSEOJI0nbX/giphy.gif' }}
-        style={styles.image}
-      />
-      <View style={styles.content}>
-        <Text type='subHeading' style={styles.header}>Your Ticket</Text>
-        <Text style={styles.body}>{title}</Text>
-        <Button
-          onPress={() =>
-            reset({
-              index: 0,
-              routes: [{ name: 'Home' }]
-            })
-          }
-          title="Go back Home"
-        />
-      </View>
-    </ScrollView>
-  )
-}
+export default EventConfirmScreen

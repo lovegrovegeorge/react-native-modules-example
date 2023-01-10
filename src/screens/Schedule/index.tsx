@@ -1,97 +1,45 @@
 import React, { useState, useRef } from 'react'
 import { useQuery } from '@apollo/react-hooks'
-import { FlatList, StyleSheet, View, Image, ActivityIndicator, Button } from 'react-native'
+import { FlatList, View, ActivityIndicator, Button } from 'react-native'
 import { Calendar } from 'react-native-calendars'
+import type { NavigationProp } from '@react-navigation/native'
+import { DateData } from 'react-native-calendars/src/types'
+import type { Event } from '../../__generated__/graphql'
 
+import EventCard from './EventCard'
 import Text from '../../shared/components/Text'
-import { formatDate } from '../../utils/dates'
 import { GET_EVENTS } from '../../graphql/queries'
 
 const CARD_HEIGHT = 420
 const LIST_HEADER_HEIGHT = 50
 
-const styles = StyleSheet.create({
-  item: {
-    backgroundColor: '#f9c2ff',
-    padding: 20,
-    marginVertical: 8
-  },
-  sectionHeading: {
-    padding: 16,
-    backgroundColor: 'white'
-  },
-  date: {
-    marginBottom: 8
-  },
-  cardHeading: {
-    marginVertical: 6
-  },
-  card: {
-    maxHeight: 400,
-    height: 400,
-    margin: 10,
-    borderWidth: 1,
-    borderColor: 'black',
-    borderRadius: 10,
-    overflow: 'hidden'
-  },
-  cardImage: {
-    flex: 1,
-    height: 180,
-    alignItems: 'stretch'
-  },
-  cardImageCanvas: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    bottom: 0,
-    right: 0
-  },
-  cardContent: {
-    padding: 10
-  }
-})
+type ScheduleScreenProps = {
+  navigation: NavigationProp<any, any>
+}
 
-const EventCard = ({ navigate, id, starts, title, description, image }) => (
-  <View style={styles.card}>
-    <View style={styles.cardImage}>
-      <Image source={{ uri: image }} style={styles.cardImageCanvas} resizeMode="cover" />
-    </View>
-    <View style={styles.cardContent}>
-      <Text type='subHeading' style={styles.cardHeading}>{title}</Text>
-      <Text style={styles.date}>{formatDate(starts)}</Text>
-      <Text type='smallText'>{description}</Text>
-      <Button
-        onPress={() => navigate('Event', { id, title })}
-        title="Buy a ticket"
-        color="#841584"
-        accessibilityLabel="Buy a ticket for this event"
-      />
-    </View>
-  </View>
-)
-
-export const Schedule = ({ navigation: { navigate } }) => {
-  const eventListRef = useRef()
+const ScheduleScreen = ({ navigation }: ScheduleScreenProps) => {
+  const eventListRef = useRef<FlatList<Event>>(null)
   const [calendarVisible, setCalendarVisible] = useState(false)
   const { loading, error, data } = useQuery(GET_EVENTS)
 
   const todaysDate = new Date()
 
-  const handleCalendarVisible = (show) => () => setCalendarVisible(show)
+  const handleCalendarVisible = (show: boolean) => () => setCalendarVisible(show)
 
-  const handleEventDateSelect = (datePickerResponse) => {
+  const handleEventDateSelect = (datePickerResponse: DateData) => {
     const eventIndex = data.allEvents.findIndex(
-      (event) => new Date(event.starts) >= new Date(datePickerResponse.dateString)
+      (event: Event) => new Date(event.starts) >= new Date(datePickerResponse.dateString)
     )
 
     setCalendarVisible(false)
     setTimeout(() => {
-      eventListRef.current.scrollToIndex({
-        index: eventIndex,
-        viewPosition: 0,
-        animated: true
-      })
+      if (eventListRef.current) {
+        eventListRef.current.scrollToIndex({
+          index: eventIndex,
+          viewPosition: 0,
+          animated: true
+        })
+      }
     }, 100)
   }
 
@@ -120,14 +68,14 @@ export const Schedule = ({ navigation: { navigate } }) => {
     </View>
   )
 
-  const getItemLayout = (data, index) => ({
+  const getItemLayout = (data: Event[] | null | undefined, index: number) => ({
     length: CARD_HEIGHT,
     offset: CARD_HEIGHT * index + LIST_HEADER_HEIGHT,
     index
   })
 
-  const renderItems = ({ item }) =>
-    <EventCard key={item.id} navigate={navigate} {...item} />
+  const renderItems = ({ item }: { item: Event }) =>
+    <EventCard key={item.id} navigation={navigation} {...item} />
 
   return (
     <View>
@@ -157,3 +105,5 @@ export const Schedule = ({ navigation: { navigate } }) => {
     </View>
   )
 }
+
+export default ScheduleScreen
