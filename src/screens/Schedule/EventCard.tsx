@@ -6,28 +6,30 @@ import Text from '../../shared/components/Text'
 import { formatDate } from '../../utils/dates'
 
 type EventCardProps = {
-  navigation: NavigationProp<any, any>,
-  id: string,
-  starts: string,
-  title: string,
-  description: string,
+  navigation: NavigationProp<any, any>
+  id: string
+  starts: string
+  title: string
+  description: string
   image: string
 }
 
 const EventCard = ({ navigation, id, starts, title, description, image }: EventCardProps) => (
   <View style={styles.card}>
     <View style={styles.cardImage}>
-      <Image source={{ uri: image }} style={styles.cardImageCanvas} resizeMode="cover" />
+      <Image source={{ uri: image }} style={styles.cardImageCanvas} resizeMode='cover' />
     </View>
     <View style={styles.cardContent}>
-      <Text type='subHeading' style={styles.cardHeading}>{title}</Text>
+      <Text type='subHeading' style={styles.cardHeading}>
+        {title}
+      </Text>
       <Text style={styles.date}>{formatDate(starts)}</Text>
       <Text type='smallText'>{description}</Text>
       <Button
         onPress={() => navigation.navigate('Event', { id, title })}
-        title="Buy a ticket"
-        color="#841584"
-        accessibilityLabel="Buy a ticket for this event"
+        title='Buy a ticket'
+        color='#841584'
+        accessibilityLabel='Buy a ticket for this event'
       />
     </View>
   </View>

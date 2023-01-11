@@ -15,15 +15,12 @@ type EventInformationProps = {
 }
 
 const EventInformation = ({ event }: EventInformationProps) => {
-  const {
-    title,
-    starts,
-    image,
-    description,
-  } = event
+  const { title, starts, image, description } = event
 
   const handleOpenMap = () =>
-    Linking.openURL(`https://www.google.co.uk/maps/?q=${DEMO_LOCATION.latitude},${DEMO_LOCATION.longitude}`)
+    Linking.openURL(
+      `https://www.google.co.uk/maps/?q=${DEMO_LOCATION.latitude},${DEMO_LOCATION.longitude}`
+    )
 
   return (
     <View>
@@ -35,12 +32,11 @@ const EventInformation = ({ event }: EventInformationProps) => {
         />
       </View>
       <View style={styles.section}>
-        <Text type='heading' style={styles.header}>{title}</Text>
+        <Text type='heading' style={styles.header}>
+          {title}
+        </Text>
         <Text style={styles.date}>{formatDate(starts as string)}</Text>
-        <Button
-          onPress={handleOpenMap}
-          title='📍 Open map'
-        />
+        <Button onPress={handleOpenMap} title='📍 Open map' />
         <Text type='smallText'>{description}</Text>
       </View>
     </View>

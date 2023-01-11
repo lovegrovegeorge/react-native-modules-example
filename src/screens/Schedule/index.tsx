@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 import { useQuery } from '@apollo/react-hooks'
-import { FlatList, View, ActivityIndicator, Button } from 'react-native'
+import { FlatList, View, ActivityIndicator, StyleSheet, Button } from 'react-native'
 import { Calendar } from 'react-native-calendars'
 import type { NavigationProp } from '@react-navigation/native'
 import { DateData } from 'react-native-calendars/src/types'
@@ -43,39 +43,37 @@ const ScheduleScreen = ({ navigation }: ScheduleScreenProps) => {
     }, 100)
   }
 
-  if (loading) return (
-    <View>
-      <ActivityIndicator />
-    </View>
-  )
+  if (loading) {
+    return (
+      <View>
+        <ActivityIndicator />
+      </View>
+    )
+  }
 
-  if (error) return (
-    <View>
-      <Text>ERROR: Is the server running?</Text>
-    </View>
-  )
+  if (error) {
+    return (
+      <View>
+        <Text>ERROR: Is the server running?</Text>
+      </View>
+    )
+  }
 
   const renderHeader = () => (
-    <View
-      style={{
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        height: LIST_HEADER_HEIGHT
-      }}
-    >
-      <Button onPress={handleCalendarVisible(true)} title="🗓 Calendar" />
+    <View style={styles.header}>
+      <Button onPress={handleCalendarVisible(true)} title='🗓 Calendar' />
     </View>
   )
 
-  const getItemLayout = (data: Event[] | null | undefined, index: number) => ({
+  const getItemLayout = (_data: Event[] | null | undefined, index: number) => ({
     length: CARD_HEIGHT,
     offset: CARD_HEIGHT * index + LIST_HEADER_HEIGHT,
     index
   })
 
-  const renderItems = ({ item }: { item: Event }) =>
+  const renderItems = ({ item }: { item: Event }) => (
     <EventCard key={item.id} navigation={navigation} {...item} />
+  )
 
   return (
     <View>
@@ -88,15 +86,15 @@ const ScheduleScreen = ({ navigation }: ScheduleScreenProps) => {
         data={data?.allEvents}
       />
       {calendarVisible && (
-        <View style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
-          <View style={{ backgroundColor: 'white', height: '100%', justifyContent: 'center' }}>
+        <View style={styles.calenderContainer}>
+          <View style={styles.calenderContent}>
             <Calendar minDate={todaysDate} onDayPress={handleEventDateSelect} />
-            <View style={{ marginTop: 30 }}>
+            <View style={styles.calenderButtonContainer}>
               <Button
                 onPress={handleCalendarVisible(false)}
-                title="Close"
-                color="#841584"
-                accessibilityLabel="Close event calendar pick"
+                title='Close'
+                color='#841584'
+                accessibilityLabel='Close event calendar pick'
               />
             </View>
           </View>
@@ -105,5 +103,33 @@ const ScheduleScreen = ({ navigation }: ScheduleScreenProps) => {
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    height: LIST_HEADER_HEIGHT
+  },
+  blurb: {
+    marginBottom: 12,
+    textAlign: 'center'
+  },
+  calenderContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    width: '100%',
+    height: '100%'
+  },
+  calenderContent: {
+    backgroundColor: 'white',
+    height: '100%',
+    justifyContent: 'center'
+  },
+  calenderButtonContainer: {
+    marginTop: 30
+  }
+})
 
 export default ScheduleScreen

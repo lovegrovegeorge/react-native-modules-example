@@ -3,22 +3,14 @@ import { Text as RNText, TextProps as RNTextProps, StyleProp, TextStyle } from '
 
 type Presets = keyof typeof presets
 
-export interface TextProps extends RNTextProps {
+interface TextProps extends RNTextProps {
   type?: Presets
   style?: StyleProp<TextStyle>
   children: React.ReactNode
 }
 
-const Text = ({
-  type = 'text',
-  style,
-  children,
-  ...rest
-}: TextProps) => {
-  const textStyles = [
-    presets[type],
-    style
-  ]
+const Text = ({ type = 'text', style, children, ...rest }: TextProps) => {
+  const textStyles = [presets[type], style]
 
   return (
     <RNText {...rest} style={textStyles}>

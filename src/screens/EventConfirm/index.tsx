@@ -11,10 +11,7 @@ type EventConfirmScreenProps = {
   route: RouteProp<any, any>
 }
 
-const EventConfirmScreen = ({
-  navigation,
-  route
-}: EventConfirmScreenProps) => {
+const EventConfirmScreen = ({ navigation, route }: EventConfirmScreenProps) => {
   const { reset } = navigation
 
   useEffect(() => {
@@ -25,13 +22,15 @@ const EventConfirmScreen = ({
   })
 
   return (
-    <ScrollView style={{ flex: 1 }}>
+    <ScrollView style={styles.container}>
       <Image
         source={{ uri: 'https://media.giphy.com/media/U15x0bURfSEOJI0nbX/giphy.gif' }}
         style={styles.image}
       />
       <View style={styles.content}>
-        <Text type='subHeading' style={styles.header}>Your Ticket</Text>
+        <Text type='subHeading' style={styles.header}>
+          Your Ticket
+        </Text>
         <Text style={styles.body}>{route.params?.title}</Text>
         <Button
           onPress={() =>
@@ -40,7 +39,7 @@ const EventConfirmScreen = ({
               routes: [{ name: 'Home' }]
             })
           }
-          title="Go back Home"
+          title='Go back Home'
         />
       </View>
     </ScrollView>
@@ -48,6 +47,9 @@ const EventConfirmScreen = ({
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  },
   header: {
     marginBottom: 24,
     textAlign: 'center'

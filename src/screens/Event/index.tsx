@@ -28,9 +28,9 @@ const EventScreen = ({ navigation }: EventScreenProps) => {
 
   const { price } = DEMO_EVENT
 
-  const handleSetName = (name: string) => setName(name)
+  const handleSetName = (value: string) => setName(value)
 
-  const handleSetEmail = (email: string) => setEmail(email)
+  const handleSetEmail = (value: string) => setEmail(value)
 
   const handleSubmit = () => {
     const { reset } = navigation
@@ -47,9 +47,13 @@ const EventScreen = ({ navigation }: EventScreenProps) => {
       <View>
         <EventInformation event={DEMO_EVENT} />
         <View style={styles.section}>
-          <Text type='subHeading' style={styles.header}>Buy a ticket</Text>
+          <Text type='subHeading' style={styles.header}>
+            Buy a ticket
+          </Text>
           <View style={styles.field}>
-            <Text type='formLabel' style={styles.label}>Your name</Text>
+            <Text type='formLabel' style={styles.label}>
+              Your name
+            </Text>
             <TextInput
               style={styles.input}
               onChangeText={handleSetName}
@@ -57,7 +61,8 @@ const EventScreen = ({ navigation }: EventScreenProps) => {
             />
           </View>
           <View style={styles.field}>
-            <Text type='formLabel' style={styles.label}>Email address</Text>
+            <Text type='formLabel' style={styles.label}>
+              Email address
             <TextInput
               style={styles.input}
               onChangeText={handleSetEmail}

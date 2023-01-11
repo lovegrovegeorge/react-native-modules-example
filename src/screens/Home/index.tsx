@@ -10,9 +10,11 @@ type HomeScreenProps = {
 
 const HomeScreen = ({ navigation: { navigate } }: HomeScreenProps) => (
   <View>
-    <Text type='heading' style={styles.header}>Events App</Text>
+    <Text type='heading' style={styles.header}>
+      Events App
+    </Text>
     <Text style={styles.blurb}>The worlds greatest events in one tiny app.</Text>
-    <Button onPress={() => navigate('Schedule')} title="All Events" color="#841584" />
+    <Button onPress={() => navigate('Schedule')} title='All Events' color='#841584' />
   </View>
 )
 

@@ -1,8 +1,8 @@
 import 'react-native-gesture-handler'
+import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 import { RouteProp } from '@react-navigation/native'
 
-import React from 'react'
 import Home from './screens/Home'
 import Schedule from './screens/Schedule'
 import Event from './screens/Event'
@@ -13,15 +13,15 @@ export const Navigator = () => {
 
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen name="Schedule" component={Schedule} />
+      <Stack.Screen name='Home' component={Home} />
+      <Stack.Screen name='Schedule' component={Schedule} />
       <Stack.Screen
-        name="Event"
+        name='Event'
         component={Event}
         options={({ route }: { route: RouteProp<any, string> }) => ({ title: route.params?.title })}
       />
       <Stack.Screen
-        name="EventConfirm"
+        name='EventConfirm'
         component={EventConfirm}
         options={({ route }: { route: RouteProp<any, string> }) => ({ title: route.params?.title })}
       />
